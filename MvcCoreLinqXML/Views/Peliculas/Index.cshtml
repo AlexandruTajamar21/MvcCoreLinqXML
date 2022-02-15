@@ -50,6 +50,8 @@
             </td>
             <td>
                 <a asp-controller="Peliculas" asp-action="Escenas" asp-route-id="@item.idPelicula" class="btn btn-info">Escenas</a>
+                <a asp-controller="Peliculas" asp-action="EscenaPelicula" asp-route-idPelicula="@item.idPelicula" class="btn btn-info">EscenasPaginadas</a>
+                <a asp-controller="Peliculas" asp-action="DetallesPelicula" asp-route-idPelicula="@item.idPelicula" class="btn btn-info">Detalles</a>
             </td>
         </tr>
 }

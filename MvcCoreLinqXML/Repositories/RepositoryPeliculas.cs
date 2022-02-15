@@ -65,5 +65,49 @@ namespace MvcCoreLinqXML.Repositories
             }
             return listaEscenas;
         }
+
+        public Escena GetEscenaPelicula(int id, int posicion, ref int numeroescenas)
+        {
+            this.path = pathprov.MapPath("escenas.xml", Folders.Documents);
+            this.document = XDocument.Load(this.path);
+
+            var consulta = from datos in this.document.Descendants("escena")
+                           where datos.Attribute("idpelicula").Value == id.ToString()
+                           select datos;
+            List<Escena> listaEscenas = new List<Escena>();
+
+            foreach (XElement dato in consulta)
+            {
+                Escena escena = new Escena();
+                escena.idPelicula = int.Parse(dato.Attribute("idpelicula").Value);
+                escena.Tituloescena = dato.Element("tituloescena").Value;
+                escena.Descripcion = dato.Element("descripcion").Value;
+                escena.Imagen = dato.Element("imagen").Value;
+                listaEscenas.Add(escena);
+            }
+            numeroescenas = listaEscenas.Count;
+            Escena escena1 = listaEscenas.Skip(posicion).Take(1).FirstOrDefault();
+            return escena1;
+        }
+
+        public Pelicula GetPeliculaId(int idPelicula)
+        {
+            this.path = pathprov.MapPath("peliculas.xml", Folders.Documents);
+            this.document = XDocument.Load(this.path);
+
+            var consulta = from datos in this.document.Descendants("pelicula")
+                           where datos.Attribute("idpelicula").Value == idPelicula.ToString()
+                           select datos;
+            XElement dato = consulta.FirstOrDefault();
+            Pelicula pelicula = new Pelicula
+            {
+                idPelicula = int.Parse(dato.Attribute("idpelicula").Value),
+                Titulo = dato.Element("titulo").Value,
+                TituloOriginal = dato.Element("titulooriginal").Value,
+                Descripcion = dato.Element("descripcion").Value,
+                Poster = dato.Element("poster").Value
+            };
+            return pelicula;
+        }
     }
 }
